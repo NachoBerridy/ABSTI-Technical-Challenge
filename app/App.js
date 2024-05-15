@@ -1,17 +1,22 @@
-import { Navbar } from "./components/Navbar.js";
-import { getAreaList } from "./utils/mealDB.client.js";
+import { getCategoryList } from "./utils/mealDB.client.js";
+import { CategoryCarousel } from "./components/CategoryCarousel.js";
+import { SearchBar } from "./components/SearchBar.js";
 
 export const App = () => {
 
   const root = document.querySelector("#root");
 
-  root.innerHTML = `
-    <h1>My App</h1>
-  `
-  root.appendChild(Navbar());
+  const title = document.createElement("h1");
+  title.textContent = "The Perfect Meal";
+  root.append(title);
 
-  getAreaList().then(data => {
-    console.log(data);
+  root.append(SearchBar());
+
+  getCategoryList().then(data => {
+
+    data.forEach(category => {
+      root.append(CategoryCarousel(category.strCategory));
+    });
   }).catch(error => {
     console.error(error);
   });
